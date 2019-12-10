@@ -1,8 +1,8 @@
 package com.naufalprakoso.billreminder.ui.bill.add
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.naufalprakoso.billreminder.R
 import com.naufalprakoso.billreminder.database.AppDatabase
 import com.naufalprakoso.billreminder.database.DbWorkerThread
@@ -32,8 +32,8 @@ class AddBillActivity : AppCompatActivity() {
 
             when {
                 title.isEmpty() -> edt_title.error = getString(R.string.validation_filled)
-                content.isEmpty() -> edt_title.error = getString(R.string.validation_filled)
-                amount.isEmpty() -> edt_title.error = getString(R.string.validation_filled)
+                content.isEmpty() -> edt_content.error = getString(R.string.validation_filled)
+                amount.isEmpty() -> edt_amount.error = getString(R.string.validation_filled)
                 else -> {
                     val bill = Bill(
                         0,
@@ -51,6 +51,7 @@ class AddBillActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun insertBill(bill: Bill) {
         val task = Runnable { db?.billDao()?.insert(bill) }
