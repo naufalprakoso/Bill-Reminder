@@ -1,4 +1,4 @@
-package com.naufalprakoso.billreminder.entity
+package com.naufalprakoso.billreminder.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
