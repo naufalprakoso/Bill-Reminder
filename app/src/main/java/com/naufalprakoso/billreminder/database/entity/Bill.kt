@@ -18,6 +18,6 @@ data class Bill(
     @ColumnInfo(name = "amount")
     var amount: Int,
 
-    @ColumnInfo(name = "paid", defaultValue = "false")
+    @ColumnInfo(name = "paid")
     var paid: Boolean
 )

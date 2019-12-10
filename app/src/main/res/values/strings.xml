@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Bill Reminder</string>
+    <string name="title_add_bill">Add Bill</string>
+    <string name="validation_filled">Must be filled</string>
 </resources>

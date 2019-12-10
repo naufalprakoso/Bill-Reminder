@@ -19,15 +19,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/edt_title"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
-            android:ems="10"
-            android:hint="Enter bill title"
-            android:inputType="textPersonName"
-            android:padding="@dimen/normal_padding" />
+            android:layout_margin="@dimen/small_margin">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:hint="Enter bill title"
+                android:inputType="textPersonName" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -45,15 +51,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_title">
 
-        <EditText
-            android:id="@+id/edt_content"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
-            android:ems="10"
-            android:hint="Enter bill content"
-            android:inputType="textPersonName"
-            android:padding="@dimen/normal_padding" />
+            android:layout_margin="@dimen/small_margin">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:hint="Enter bill content"
+                android:inputType="textPersonName" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -71,15 +83,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_content">
 
-        <EditText
-            android:id="@+id/edt_amount"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
-            android:ems="10"
-            android:hint="Enter bill amount"
-            android:inputType="number"
-            android:padding="@dimen/normal_padding" />
+            android:layout_margin="@dimen/small_margin">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:hint="Enter bill amount"
+                android:inputType="number" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     </com.google.android.material.card.MaterialCardView>
 

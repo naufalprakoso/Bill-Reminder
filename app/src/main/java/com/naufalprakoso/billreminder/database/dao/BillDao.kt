@@ -16,7 +16,7 @@ interface BillDao {
     fun getDetail(id: Int): Bill
 
     @Insert
-    fun insertAll(vararg bill: Bill)
+    fun insert(vararg bill: Bill)
 
     @Delete
     fun delete(bill: Bill)

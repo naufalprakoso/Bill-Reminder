@@ -8,7 +8,7 @@ import com.naufalprakoso.billreminder.database.entity.Bill
 @Database(entities = [Bill::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun BillDao(): BillDao
+    abstract fun billDao(): BillDao
 
     companion object {
         private var INSTANCE: AppDatabase? = null
