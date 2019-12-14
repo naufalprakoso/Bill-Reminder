@@ -1,16 +1,18 @@
 package com.naufalprakoso.billreminder.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.naufalprakoso.billreminder.database.entity.Bill
 
 @Dao
 interface BillDao {
-    @Query("SELECT * FROM bills")
-    fun getAll(): LiveData<List<Bill>>
+    @Query("SELECT * FROM bills where paid = 'false'")
+    fun getUnpaidBill(): List<Bill>
+
+    @Query("SELECT * FROM bills where paid = 'true'")
+    fun getPaidBill(): List<Bill>
 
     @Query("SELECT * FROM bills WHERE title LIKE :title")
-    fun findByTitle(title: String): LiveData<List<Bill>>
+    fun findByTitle(title: String): List<Bill>
 
     @Query("SELECT * FROM bills WHERE id = :id")
     fun getDetail(id: Int): Bill

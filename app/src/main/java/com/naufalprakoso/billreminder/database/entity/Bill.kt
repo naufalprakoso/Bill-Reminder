@@ -19,5 +19,5 @@ data class Bill(
     var amount: Int,
 
     @ColumnInfo(name = "paid")
-    var paid: Boolean
+    var paid: String
 )

@@ -40,7 +40,7 @@ class AddBillActivity : AppCompatActivity() {
                         title,
                         content,
                         amount.toInt(),
-                        false
+                        "false"
                     )
 
                     insertBill(bill)
