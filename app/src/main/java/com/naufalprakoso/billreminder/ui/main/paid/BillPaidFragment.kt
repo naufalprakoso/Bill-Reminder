@@ -14,7 +14,6 @@ import com.naufalprakoso.billreminder.database.AppDatabase
 import com.naufalprakoso.billreminder.database.DbWorkerThread
 import com.naufalprakoso.billreminder.database.entity.Bill
 import com.naufalprakoso.billreminder.ui.bill.detail.BillDetailActivity
-import com.naufalprakoso.billreminder.ui.main.adapters.BillPaidAdapter
 import com.naufalprakoso.billreminder.utils.Const
 import kotlinx.android.synthetic.main.fragment_bill_paid.view.*
 
@@ -42,11 +41,12 @@ class BillPaidFragment : Fragment() {
 
         db = context?.let { AppDatabase.getInstance(it) }
 
-        adapter = BillPaidAdapter { bill ->
-            val intent = Intent(context, BillDetailActivity::class.java)
-            intent.putExtra(Const.BILL_ID, bill)
-            startActivity(intent)
-        }
+        adapter =
+            BillPaidAdapter { bill ->
+                val intent = Intent(context, BillDetailActivity::class.java)
+                intent.putExtra(Const.BILL_ID, bill)
+                startActivity(intent)
+            }
     }
 
     override fun onCreateView(
@@ -71,7 +71,7 @@ class BillPaidFragment : Fragment() {
     private fun getBillData() {
         bills.clear()
         val task = Runnable {
-            val billData = db?.billDao()?.getPaidBill()
+            val billData = db?.billDao()?.getBillsPaid()
             handler.post {
                 billData?.let { bills.addAll(it) }
                 if (bills.isEmpty()) {

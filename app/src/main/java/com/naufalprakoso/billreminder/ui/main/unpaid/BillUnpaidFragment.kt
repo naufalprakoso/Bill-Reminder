@@ -15,7 +15,6 @@ import com.naufalprakoso.billreminder.database.AppDatabase
 import com.naufalprakoso.billreminder.database.DbWorkerThread
 import com.naufalprakoso.billreminder.database.entity.Bill
 import com.naufalprakoso.billreminder.ui.bill.detail.BillDetailActivity
-import com.naufalprakoso.billreminder.ui.main.adapters.BillAdapter
 import com.naufalprakoso.billreminder.utils.Const
 import kotlinx.android.synthetic.main.fragment_bill_unpaid.view.*
 
@@ -33,7 +32,7 @@ class BillUnpaidFragment : Fragment() {
     private lateinit var dbWorkerThread: DbWorkerThread
     private val handler = Handler()
 
-    private lateinit var adapter: BillAdapter
+    private lateinit var unpaidAdapter: BillUnpaidAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,8 +42,8 @@ class BillUnpaidFragment : Fragment() {
 
         db = context?.let { AppDatabase.getInstance(it) }
 
-        adapter =
-            BillAdapter({ bill, isChecked ->
+        unpaidAdapter =
+            BillUnpaidAdapter({ bill, isChecked ->
                 if (isChecked) {
                     Toast.makeText(context, "Bill has been paid", Toast.LENGTH_SHORT).show()
 
@@ -68,7 +67,7 @@ class BillUnpaidFragment : Fragment() {
 
         view.rv_bills?.setHasFixedSize(true)
         view.rv_bills?.layoutManager = LinearLayoutManager(context)
-        view.rv_bills?.adapter = adapter
+        view.rv_bills?.adapter = unpaidAdapter
 
         return view
     }
@@ -87,7 +86,7 @@ class BillUnpaidFragment : Fragment() {
     private fun getBillData() {
         bills.clear()
         val task = Runnable {
-            val billData = db?.billDao()?.getUnpaidBill()
+            val billData = db?.billDao()?.getBillsUnpaid()
             handler.post {
                 billData?.let { bills.addAll(it) }
                 if (bills.isEmpty()) {
@@ -97,8 +96,8 @@ class BillUnpaidFragment : Fragment() {
                     view?.tv_no_data?.visibility = View.GONE
                     view?.rv_bills?.visibility = View.VISIBLE
                 }
-                adapter.setBills(bills)
-                adapter.notifyDataSetChanged()
+                unpaidAdapter.setBills(bills)
+                unpaidAdapter.notifyDataSetChanged()
             }
         }
         dbWorkerThread.postTask(task)

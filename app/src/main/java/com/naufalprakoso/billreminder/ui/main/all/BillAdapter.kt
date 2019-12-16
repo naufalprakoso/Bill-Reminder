@@ -1,4 +1,4 @@
-package com.naufalprakoso.billreminder.ui.main.adapters
+package com.naufalprakoso.billreminder.ui.main.all
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.naufalprakoso.billreminder.R
 import com.naufalprakoso.billreminder.database.entity.Bill
-import kotlinx.android.synthetic.main.item_bill.view.*
+import kotlinx.android.synthetic.main.item_bill_unpaid.view.*
 
-class BillPaidAdapter(
+class BillAdapter(
     private val showDetail: (Bill) -> Unit
-) : RecyclerView.Adapter<BillPaidAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<BillAdapter.ViewHolder>() {
 
     private val bills = arrayListOf<Bill>()
 
@@ -21,7 +21,7 @@ class BillPaidAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_bill_paid, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_bill_unpaid, parent, false)
         )
 
     override fun getItemCount(): Int = bills.size
@@ -38,6 +38,8 @@ class BillPaidAdapter(
             itemView.tv_title.text = bill.title
             itemView.tv_amount.text = itemView.context.getString(R.string.bill_amount, bill.amount)
             itemView.tv_content.text = bill.content
+            itemView.cb_paid.isChecked = bill.paid.toBoolean()
+            itemView.cb_paid.isEnabled = false
 
             itemView.setOnClickListener {
                 showDetail(bill)
