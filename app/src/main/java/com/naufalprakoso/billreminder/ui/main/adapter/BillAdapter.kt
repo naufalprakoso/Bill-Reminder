@@ -16,6 +16,7 @@ class BillAdapter(
     private val bills = arrayListOf<Bill>()
 
     fun setBills(bills: List<Bill>) {
+        this.bills.clear()
         this.bills.addAll(bills)
     }
 

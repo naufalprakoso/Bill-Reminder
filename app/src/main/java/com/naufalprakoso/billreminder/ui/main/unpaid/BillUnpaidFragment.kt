@@ -70,20 +70,7 @@ class BillUnpaidFragment : Fragment() {
         view.rv_bills?.layoutManager = LinearLayoutManager(context)
         view.rv_bills?.adapter = adapter
 
-        if (bills.isEmpty()) {
-            view.tv_no_data.visibility = View.VISIBLE
-            view.rv_bills.visibility = View.GONE
-        } else {
-            view.tv_no_data.visibility = View.GONE
-            view.rv_bills.visibility = View.VISIBLE
-        }
-
         return view
-    }
-
-    override fun onStart() {
-        super.onStart()
-        getBillData()
     }
 
     private fun updateBill(bill: Bill) {
@@ -91,11 +78,25 @@ class BillUnpaidFragment : Fragment() {
         dbWorkerThread.postTask(task)
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        getBillData()
+    }
+
     private fun getBillData() {
+        bills.clear()
         val task = Runnable {
             val billData = db?.billDao()?.getUnpaidBill()
             handler.post {
                 billData?.let { bills.addAll(it) }
+                if (bills.isEmpty()) {
+                    view?.tv_no_data?.visibility = View.VISIBLE
+                    view?.rv_bills?.visibility = View.GONE
+                } else {
+                    view?.tv_no_data?.visibility = View.GONE
+                    view?.rv_bills?.visibility = View.VISIBLE
+                }
                 adapter.setBills(bills)
                 adapter.notifyDataSetChanged()
             }
