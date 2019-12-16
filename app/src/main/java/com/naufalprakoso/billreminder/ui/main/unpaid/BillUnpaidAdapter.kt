@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.naufalprakoso.billreminder.R
 import com.naufalprakoso.billreminder.database.entity.Bill
 import kotlinx.android.synthetic.main.item_bill_unpaid.view.*
+import java.text.NumberFormat
+import java.util.*
 
 class BillUnpaidAdapter(
     private val checkBill: (Bill, Boolean) -> Unit,
@@ -33,12 +35,16 @@ class BillUnpaidAdapter(
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         fun bindItem(bill: Bill, checkBill: (Bill, Boolean) -> Unit, showDetail: (Bill) -> Unit) {
+            val localeID = Locale("in", "ID")
+            val formatRupiah = NumberFormat.getCurrencyInstance(localeID)
+            val amount = formatRupiah.format(bill.amount.toDouble())
+
             itemView.tv_title.text = bill.title
-            itemView.tv_amount.text = itemView.context.getString(R.string.bill_amount, bill.amount)
+            itemView.tv_amount.text = amount
             itemView.tv_content.text = bill.content
             itemView.cb_paid.isChecked = bill.paid.toBoolean()
 
-            itemView.cb_paid.setOnCheckedChangeListener { buttonView, isChecked ->
+            itemView.cb_paid.setOnCheckedChangeListener { _, isChecked ->
                 checkBill(bill, isChecked)
             }
 

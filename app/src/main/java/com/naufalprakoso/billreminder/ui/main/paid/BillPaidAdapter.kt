@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.naufalprakoso.billreminder.R
 import com.naufalprakoso.billreminder.database.entity.Bill
 import kotlinx.android.synthetic.main.item_bill_unpaid.view.*
+import java.text.NumberFormat
+import java.util.*
 
 class BillPaidAdapter(
     private val showDetail: (Bill) -> Unit
@@ -35,8 +37,12 @@ class BillPaidAdapter(
             bill: Bill,
             showDetail: (Bill) -> Unit
         ) {
+            val localeID = Locale("in", "ID")
+            val formatRupiah = NumberFormat.getCurrencyInstance(localeID)
+            val amount = formatRupiah.format(bill.amount.toDouble())
+
             itemView.tv_title.text = bill.title
-            itemView.tv_amount.text = itemView.context.getString(R.string.bill_amount, bill.amount)
+            itemView.tv_amount.text = amount
             itemView.tv_content.text = bill.content
 
             itemView.setOnClickListener {

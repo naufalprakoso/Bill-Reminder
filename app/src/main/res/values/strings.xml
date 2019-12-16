@@ -13,8 +13,6 @@
     <string name="content">Content</string>
     <string name="amount">Amount</string>
 
-    <string name="bill_amount" translatable="false">Rp. %1$d</string>
-
     <string name="enter_bill_title">Enter bill title</string>
     <string name="enter_bill_content">Enter bill content</string>
     <string name="enter_bill_amount">Enter bill amount</string>
