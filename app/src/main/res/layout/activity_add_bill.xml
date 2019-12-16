@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:ems="10"
-                android:hint="Enter bill title"
+                android:hint="@string/enter_bill_title"
                 android:inputType="textPersonName" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:ems="10"
-                android:hint="Enter bill content"
+                android:hint="@string/enter_bill_content"
                 android:inputType="textPersonName" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -70,7 +70,6 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cv_amount"
         style="@style/customCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -94,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:ems="10"
-                android:hint="Enter bill amount"
+                android:hint="@string/enter_bill_amount"
                 android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>

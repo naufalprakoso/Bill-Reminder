@@ -19,7 +19,7 @@
         android:id="@+id/tv_no_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title_unpaid_bill"
+        android:text="@string/title_bill"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp"
         android:visibility="gone"

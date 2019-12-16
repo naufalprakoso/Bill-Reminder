@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pengingat Tagihan</string>
+    <string name="amount">Jumlah</string>
+    <string name="content">Konten</string>
+    <string name="enter_bill_amount">Masukkan jumlah tagihan</string>
+    <string name="enter_bill_content">Masukkan konten tagihan</string>
+    <string name="enter_bill_title">Masukkan judul tagihan</string>
+    <string name="menu_bills">Tagihan</string>
+    <string name="menu_bills_paid">Tagihan Terbayar</string>
+    <string name="menu_bills_unpaid">Tagihan Belum Dibayar</string>
+    <string name="title">Judul</string>
+    <string name="title_add_bill">Tambah Tagihan</string>
+    <string name="title_bill_detail">Tagihan Detail</string>
+    <string name="title_unpaid_bill">Tidak ada tagihan yang belum terbayar</string>
+    <string name="title_paid_bill">Tidak ada tagihan yang sudah dibayar</string>
+    <string name="title_bill">Belum ada tagihan</string>
+    <string name="validation_filled">Harus diisi</string>
+</resources>
