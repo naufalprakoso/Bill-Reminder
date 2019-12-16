@@ -1,4 +1,4 @@
-package com.naufalprakoso.billreminder.ui.home
+package com.naufalprakoso.billreminder.ui.main.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +20,9 @@ class BillAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_bill, parent, false))
+        ViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.item_bill, parent, false)
+        )
 
     override fun getItemCount(): Int = bills.size
 
