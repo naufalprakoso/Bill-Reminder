@@ -15,7 +15,7 @@ import com.naufalprakoso.billreminder.database.AppDatabase
 import com.naufalprakoso.billreminder.database.DbWorkerThread
 import com.naufalprakoso.billreminder.database.entity.Bill
 import com.naufalprakoso.billreminder.ui.bill.detail.BillDetailActivity
-import com.naufalprakoso.billreminder.ui.main.adapter.BillAdapter
+import com.naufalprakoso.billreminder.ui.main.adapters.BillAdapter
 import com.naufalprakoso.billreminder.utils.Const
 import kotlinx.android.synthetic.main.fragment_bill_unpaid.view.*
 
