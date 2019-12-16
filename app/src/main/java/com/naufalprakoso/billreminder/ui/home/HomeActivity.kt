@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -52,17 +54,6 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        getBillData()
-    }
-
-    override fun onDestroy() {
-        AppDatabase.destroyInstance()
-        dbWorkerThread.quit()
-        super.onDestroy()
-    }
-
     private fun updateBill(bill: Bill) {
         val task = Runnable { db?.billDao()?.update(bill) }
         dbWorkerThread.postTask(task)
@@ -84,5 +75,35 @@ class HomeActivity : AppCompatActivity() {
             }
         }
         dbWorkerThread.postTask(task)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_bills -> {
+                // TODO: Show bills activity
+                true
+            }
+            R.id.menu_bills_paid -> {
+                // TODO: Show bills paid activity
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getBillData()
+    }
+
+    override fun onDestroy() {
+        AppDatabase.destroyInstance()
+        dbWorkerThread.quit()
+        super.onDestroy()
     }
 }

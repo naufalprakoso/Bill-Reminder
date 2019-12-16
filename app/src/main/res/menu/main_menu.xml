@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_bills"
+        android:icon="@drawable/ic_attach_money"
+        android:title="@string/menu_bills" />
+    <item android:id="@+id/menu_bills_paid"
+        android:icon="@drawable/ic_attach_money"
+        android:title="@string/menu_bills_paid"
+        app:showAsAction="ifRoom" />
+</menu>
