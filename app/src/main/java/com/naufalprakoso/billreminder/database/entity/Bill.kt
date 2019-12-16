@@ -1,10 +1,13 @@
 package com.naufalprakoso.billreminder.database.entity
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "bills")
+@Parcelize
 data class Bill(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
@@ -20,4 +23,4 @@ data class Bill(
 
     @ColumnInfo(name = "paid")
     var paid: String
-)
+) : Parcelable

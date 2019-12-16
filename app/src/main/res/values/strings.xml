@@ -1,8 +1,14 @@
 <resources>
     <string name="app_name">Bill Reminder</string>
     <string name="title_add_bill">Add Bill</string>
+    <string name="title_bill_detail">Bill Detail</string>
     <string name="validation_filled">Must be filled</string>
     <string name="title_unpaid_bill">No bill(s) unpaid data</string>
     <string name="menu_bills">Bills</string>
     <string name="menu_bills_paid">Bills paid</string>
+    <string name="title">Title</string>
+    <string name="content">Content</string>
+    <string name="amount">Amount</string>
+
+    <string name="bill_amount">Rp. %1$d</string>
 </resources>

@@ -9,7 +9,8 @@ import com.naufalprakoso.billreminder.database.entity.Bill
 import kotlinx.android.synthetic.main.item_bill.view.*
 
 class BillAdapter(
-    private val checkBill: (Bill, Boolean) -> Unit
+    private val checkBill: (Bill, Boolean) -> Unit,
+    private val showDetail: (Bill) -> Unit
 ) : RecyclerView.Adapter<BillAdapter.ViewHolder>() {
 
     private val bills = arrayListOf<Bill>()
@@ -24,18 +25,22 @@ class BillAdapter(
     override fun getItemCount(): Int = bills.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItem(bills[position], checkBill)
+        holder.bindItem(bills[position], checkBill, showDetail)
     }
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        fun bindItem(bill: Bill, checkBill: (Bill, Boolean) -> Unit) {
+        fun bindItem(bill: Bill, checkBill: (Bill, Boolean) -> Unit, showDetail: (Bill) -> Unit) {
             itemView.tv_title.text = bill.title
-            itemView.tv_amount.text = bill.amount.toString()
+            itemView.tv_amount.text = itemView.context.getString(R.string.bill_amount, bill.amount)
             itemView.tv_content.text = bill.content
             itemView.cb_paid.isChecked = bill.paid.toBoolean()
 
             itemView.cb_paid.setOnCheckedChangeListener { buttonView, isChecked ->
                 checkBill(bill, isChecked)
+            }
+
+            itemView.setOnClickListener {
+                showDetail(bill)
             }
         }
     }

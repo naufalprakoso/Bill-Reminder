@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ui.bill.detail.BillDetailActivity"
+            android:label="@string/title_bill_detail" />
+        <activity
             android:name=".ui.bill.add.AddBillActivity"
             android:label="@string/title_add_bill" />
         <activity android:name=".ui.home.HomeActivity">

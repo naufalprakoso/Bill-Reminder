@@ -1,5 +1,6 @@
 package com.naufalprakoso.billreminder.ui.home
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +15,8 @@ import com.naufalprakoso.billreminder.database.AppDatabase
 import com.naufalprakoso.billreminder.database.DbWorkerThread
 import com.naufalprakoso.billreminder.database.entity.Bill
 import com.naufalprakoso.billreminder.ui.bill.add.AddBillActivity
+import com.naufalprakoso.billreminder.ui.bill.detail.BillDetailActivity
+import com.naufalprakoso.billreminder.utils.Const
 import kotlinx.android.synthetic.main.activity_main.*
 
 class HomeActivity : AppCompatActivity() {
@@ -33,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
 
         db = AppDatabase.getInstance(this)
 
-        adapter = BillAdapter { bill, isChecked ->
+        adapter = BillAdapter({ bill, isChecked ->
             if (isChecked) {
                 Toast.makeText(this, "Bill has been paid", Toast.LENGTH_SHORT).show()
 
@@ -42,7 +45,11 @@ class HomeActivity : AppCompatActivity() {
 
                 getBillData()
             }
-        }
+        }, { bill ->
+            val intent = Intent(this, BillDetailActivity::class.java)
+            intent.putExtra(Const.BILL_ID, bill)
+            startActivity(intent)
+        })
 
         rv_bills.setHasFixedSize(true)
         rv_bills.layoutManager = LinearLayoutManager(this)
@@ -64,10 +71,10 @@ class HomeActivity : AppCompatActivity() {
             val bills = db?.billDao()?.getUnpaidBill()
             handler.post {
                 if (bills == null || bills.isEmpty()) {
-                    tv_no_date.visibility = View.VISIBLE
+                    tv_no_data.visibility = View.VISIBLE
                     rv_bills.visibility = View.GONE
                 } else {
-                    tv_no_date.visibility = View.GONE
+                    tv_no_data.visibility = View.GONE
                     rv_bills.visibility = View.VISIBLE
                     adapter.setBills(bills)
                     adapter.notifyDataSetChanged()
@@ -94,6 +101,11 @@ class HomeActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun openActivity(activityClass: Activity) {
+        val intent = Intent(this, activityClass::class.java)
+        startActivity(intent)
     }
 
     override fun onStart() {
