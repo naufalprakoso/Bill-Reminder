@@ -1,5 +1,5 @@
-# Bill-Remember
-Simple Bill Reminder app using Room
+# Bil -Remember
+Simple Bill Reminder app using Room and ViewBinding
 
 ## Implement
 - Room
