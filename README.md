@@ -1,8 +1,9 @@
-# Bil -Remember
+# Bill Remember
 Simple Bill Reminder app using Room and ViewBinding
 
 ## Implement
 - Room
+- ViewBinding
 
 Bills Unpaid           |Bills Paid           |Bills
 :-------------------------:|:-------------------------:|:-------------------------
