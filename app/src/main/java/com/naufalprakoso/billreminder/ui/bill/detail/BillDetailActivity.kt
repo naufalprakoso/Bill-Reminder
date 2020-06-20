@@ -7,7 +7,7 @@ import com.naufalprakoso.billreminder.R
 import com.naufalprakoso.billreminder.database.AppDatabase
 import com.naufalprakoso.billreminder.database.DbWorkerThread
 import com.naufalprakoso.billreminder.database.entity.Bill
-import com.naufalprakoso.billreminder.utils.Const
+import com.naufalprakoso.billreminder.utils.BILL_ID
 import kotlinx.android.synthetic.main.activity_bill_detail.*
 import java.text.NumberFormat
 import java.util.*
@@ -27,7 +27,7 @@ class BillDetailActivity : AppCompatActivity() {
 
         db = AppDatabase.getInstance(this)
 
-        val bill = intent.getParcelableExtra<Bill>(Const.BILL_ID)
+        val bill = intent.getParcelableExtra<Bill>(BILL_ID)
 
         val localeID = Locale("in", "ID")
         val formatRupiah = NumberFormat.getCurrencyInstance(localeID)
@@ -40,12 +40,13 @@ class BillDetailActivity : AppCompatActivity() {
         }
 
         bill?.let {
-            if (bill.paid == "true")
+            if (bill.paid == "true") {
                 fab.visibility = View.GONE
+            }
 
             fab.setOnClickListener {
-                bill.paid = "true"
-                updateBill(bill)
+                val newBill = bill.copy(paid = "true")
+                updateBill(newBill)
                 fab.visibility = View.GONE
             }
         }

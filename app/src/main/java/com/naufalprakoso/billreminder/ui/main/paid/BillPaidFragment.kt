@@ -8,22 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.naufalprakoso.billreminder.R
 import com.naufalprakoso.billreminder.database.AppDatabase
 import com.naufalprakoso.billreminder.database.DbWorkerThread
 import com.naufalprakoso.billreminder.database.entity.Bill
 import com.naufalprakoso.billreminder.ui.bill.detail.BillDetailActivity
-import com.naufalprakoso.billreminder.utils.Const
+import com.naufalprakoso.billreminder.utils.BILL_ID
 import kotlinx.android.synthetic.main.fragment_bill_paid.view.*
 
 class BillPaidFragment : Fragment() {
-
-    companion object {
-        fun newInstance(): Fragment {
-            return BillPaidFragment()
-        }
-    }
 
     private val bills = arrayListOf<Bill>()
 
@@ -32,22 +25,6 @@ class BillPaidFragment : Fragment() {
     private val handler = Handler()
 
     private lateinit var adapter: BillPaidAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        dbWorkerThread = DbWorkerThread("dbWorkerThread")
-        dbWorkerThread.start()
-
-        db = context?.let { AppDatabase.getInstance(it) }
-
-        adapter =
-            BillPaidAdapter { bill ->
-                val intent = Intent(context, BillDetailActivity::class.java)
-                intent.putExtra(Const.BILL_ID, bill)
-                startActivity(intent)
-            }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,6 +39,24 @@ class BillPaidFragment : Fragment() {
         return view
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        if (activity != null) {
+            dbWorkerThread = DbWorkerThread("dbWorkerThread")
+            dbWorkerThread.start()
+
+            db = context?.let { AppDatabase.getInstance(it) }
+
+            adapter =
+                BillPaidAdapter { bill ->
+                    val intent = Intent(context, BillDetailActivity::class.java)
+                    intent.putExtra(BILL_ID, bill)
+                    startActivity(intent)
+                }
+        }
+    }
+
     override fun onStart() {
         super.onStart()
 
@@ -71,7 +66,7 @@ class BillPaidFragment : Fragment() {
     private fun getBillData() {
         bills.clear()
         val task = Runnable {
-            val billData = db?.billDao()?.getBillsPaid()
+            val billData = db?.billDao()?.getPaidBills()
             handler.post {
                 billData?.let { bills.addAll(it) }
                 if (bills.isEmpty()) {
@@ -86,6 +81,12 @@ class BillPaidFragment : Fragment() {
             }
         }
         dbWorkerThread.postTask(task)
+    }
+
+    companion object {
+        fun newInstance(): Fragment {
+            return BillPaidFragment()
+        }
     }
 
 }

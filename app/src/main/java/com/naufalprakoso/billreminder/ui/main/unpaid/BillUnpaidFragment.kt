@@ -9,22 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.naufalprakoso.billreminder.R
 import com.naufalprakoso.billreminder.database.AppDatabase
 import com.naufalprakoso.billreminder.database.DbWorkerThread
 import com.naufalprakoso.billreminder.database.entity.Bill
 import com.naufalprakoso.billreminder.ui.bill.detail.BillDetailActivity
-import com.naufalprakoso.billreminder.utils.Const
+import com.naufalprakoso.billreminder.utils.BILL_ID
 import kotlinx.android.synthetic.main.fragment_bill_unpaid.view.*
 
 class BillUnpaidFragment : Fragment() {
-
-    companion object {
-        fun newInstance(): Fragment {
-            return BillUnpaidFragment()
-        }
-    }
 
     private val bills = arrayListOf<Bill>()
 
@@ -33,31 +26,6 @@ class BillUnpaidFragment : Fragment() {
     private val handler = Handler()
 
     private lateinit var unpaidAdapter: BillUnpaidAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        dbWorkerThread = DbWorkerThread("dbWorkerThread")
-        dbWorkerThread.start()
-
-        db = context?.let { AppDatabase.getInstance(it) }
-
-        unpaidAdapter =
-            BillUnpaidAdapter({ bill, isChecked ->
-                if (isChecked) {
-                    Toast.makeText(context, "Bill has been paid", Toast.LENGTH_SHORT).show()
-
-                    bill.paid = "true"
-                    updateBill(bill)
-
-                    getBillData()
-                }
-            }, { bill ->
-                val intent = Intent(context, BillDetailActivity::class.java)
-                intent.putExtra(Const.BILL_ID, bill)
-                startActivity(intent)
-            })
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,6 +38,33 @@ class BillUnpaidFragment : Fragment() {
         view.rv_bills?.adapter = unpaidAdapter
 
         return view
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        if (activity != null) {
+            dbWorkerThread = DbWorkerThread("dbWorkerThread")
+            dbWorkerThread.start()
+
+            db = context?.let { AppDatabase.getInstance(it) }
+
+            unpaidAdapter =
+                BillUnpaidAdapter({ bill, isChecked ->
+                    if (isChecked) {
+                        Toast.makeText(context, "Bill has been paid", Toast.LENGTH_SHORT).show()
+
+                        val newBill = bill.copy(paid = "true")
+                        updateBill(newBill)
+
+                        getBillData()
+                    }
+                }, { bill ->
+                    val intent = Intent(context, BillDetailActivity::class.java)
+                    intent.putExtra(BILL_ID, bill)
+                    startActivity(intent)
+                })
+        }
     }
 
     private fun updateBill(bill: Bill) {
@@ -86,7 +81,7 @@ class BillUnpaidFragment : Fragment() {
     private fun getBillData() {
         bills.clear()
         val task = Runnable {
-            val billData = db?.billDao()?.getBillsUnpaid()
+            val billData = db?.billDao()?.getUnpaidBills()
             handler.post {
                 billData?.let { bills.addAll(it) }
                 if (bills.isEmpty()) {
@@ -101,6 +96,12 @@ class BillUnpaidFragment : Fragment() {
             }
         }
         dbWorkerThread.postTask(task)
+    }
+
+    companion object {
+        fun newInstance(): Fragment {
+            return BillUnpaidFragment()
+        }
     }
 
 }

@@ -22,10 +22,13 @@ class BillUnpaidAdapter(
         this.bills.addAll(bills)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_bill_unpaid, parent, false)
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(
+            R.layout.item_bill_unpaid,
+            parent,
+            false
+        ))
+    }
 
     override fun getItemCount(): Int = bills.size
 
@@ -33,8 +36,12 @@ class BillUnpaidAdapter(
         holder.bindItem(bills[position], checkBill, showDetail)
     }
 
-    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        fun bindItem(bill: Bill, checkBill: (Bill, Boolean) -> Unit, showDetail: (Bill) -> Unit) {
+    inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+        inline fun bindItem(
+            bill: Bill,
+            crossinline checkBill: (Bill, Boolean) -> Unit,
+            crossinline showDetail: (Bill) -> Unit
+        ) {
             val localeID = Locale("in", "ID")
             val formatRupiah = NumberFormat.getCurrencyInstance(localeID)
             val amount = formatRupiah.format(bill.amount.toDouble())

@@ -14,16 +14,10 @@ import com.naufalprakoso.billreminder.database.AppDatabase
 import com.naufalprakoso.billreminder.database.DbWorkerThread
 import com.naufalprakoso.billreminder.database.entity.Bill
 import com.naufalprakoso.billreminder.ui.bill.detail.BillDetailActivity
-import com.naufalprakoso.billreminder.utils.Const
+import com.naufalprakoso.billreminder.utils.BILL_ID
 import kotlinx.android.synthetic.main.fragment_bills.view.*
 
 class BillsFragment : Fragment() {
-
-    companion object {
-        fun newInstance(): Fragment {
-            return BillsFragment()
-        }
-    }
 
     private val bills = arrayListOf<Bill>()
 
@@ -32,21 +26,6 @@ class BillsFragment : Fragment() {
     private val handler = Handler()
 
     private lateinit var adapter: BillAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        dbWorkerThread = DbWorkerThread("dbWorkerThread")
-        dbWorkerThread.start()
-
-        db = context?.let { AppDatabase.getInstance(it) }
-
-        adapter = BillAdapter { bill ->
-            val intent = Intent(context, BillDetailActivity::class.java)
-            intent.putExtra(Const.BILL_ID, bill)
-            startActivity(intent)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,6 +38,23 @@ class BillsFragment : Fragment() {
         view.rv_bills?.adapter = adapter
 
         return view
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        if (activity != null) {
+            dbWorkerThread = DbWorkerThread("dbWorkerThread")
+            dbWorkerThread.start()
+
+            db = context?.let { AppDatabase.getInstance(it) }
+
+            adapter = BillAdapter { bill ->
+                val intent = Intent(context, BillDetailActivity::class.java)
+                intent.putExtra(BILL_ID, bill)
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onStart() {
@@ -85,5 +81,11 @@ class BillsFragment : Fragment() {
             }
         }
         dbWorkerThread.postTask(task)
+    }
+
+    companion object {
+        fun newInstance(): Fragment {
+            return BillsFragment()
+        }
     }
 }

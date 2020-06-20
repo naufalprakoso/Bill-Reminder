@@ -10,17 +10,17 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Bill(
     @PrimaryKey(autoGenerate = true)
-    var id: Int,
+    val id: Int,
 
     @ColumnInfo(name = "title")
-    var title: String,
+    val title: String,
 
     @ColumnInfo(name = "content")
-    var content: String,
+    val content: String,
 
     @ColumnInfo(name = "amount")
-    var amount: Int,
+    val amount: Int,
 
     @ColumnInfo(name = "paid")
-    var paid: String
+    val paid: String
 ) : Parcelable

@@ -52,7 +52,6 @@ class AddBillActivity : AppCompatActivity() {
         }
     }
 
-
     private fun insertBill(bill: Bill) {
         val task = Runnable { db?.billDao()?.insert(bill) }
         dbWorkerThread.postTask(task)
