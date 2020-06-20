@@ -9,13 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.naufalprakoso.billreminder.R
 import com.naufalprakoso.billreminder.database.AppDatabase
 import com.naufalprakoso.billreminder.database.DbWorkerThread
 import com.naufalprakoso.billreminder.database.entity.Bill
+import com.naufalprakoso.billreminder.databinding.FragmentBillUnpaidBinding
 import com.naufalprakoso.billreminder.ui.bill.detail.BillDetailActivity
 import com.naufalprakoso.billreminder.utils.BILL_ID
-import kotlinx.android.synthetic.main.fragment_bill_unpaid.view.*
 
 class BillUnpaidFragment : Fragment() {
 
@@ -26,18 +25,19 @@ class BillUnpaidFragment : Fragment() {
     private val handler = Handler()
 
     private lateinit var unpaidAdapter: BillUnpaidAdapter
+    private lateinit var binding: FragmentBillUnpaidBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_bill_unpaid, container, false)
+        binding = FragmentBillUnpaidBinding.inflate(inflater, container, false)
 
-        view.rv_bills?.setHasFixedSize(true)
-        view.rv_bills?.layoutManager = LinearLayoutManager(context)
-        view.rv_bills?.adapter = unpaidAdapter
+        binding.rvBills.setHasFixedSize(true)
+        binding.rvBills.layoutManager = LinearLayoutManager(context)
+        binding.rvBills.adapter = unpaidAdapter
 
-        return view
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -47,23 +47,25 @@ class BillUnpaidFragment : Fragment() {
             dbWorkerThread = DbWorkerThread("dbWorkerThread")
             dbWorkerThread.start()
 
-            db = context?.let { AppDatabase.getInstance(it) }
+            if (context != null) {
+                db = AppDatabase.getInstance(context!!)
 
-            unpaidAdapter =
-                BillUnpaidAdapter({ bill, isChecked ->
-                    if (isChecked) {
-                        Toast.makeText(context, "Bill has been paid", Toast.LENGTH_SHORT).show()
+                unpaidAdapter =
+                    BillUnpaidAdapter(context!!, { bill, isChecked ->
+                        if (isChecked) {
+                            Toast.makeText(context, "Bill has been paid", Toast.LENGTH_SHORT).show()
 
-                        val newBill = bill.copy(paid = "true")
-                        updateBill(newBill)
+                            val newBill = bill.copy(paid = "true")
+                            updateBill(newBill)
 
-                        getBillData()
-                    }
-                }, { bill ->
-                    val intent = Intent(context, BillDetailActivity::class.java)
-                    intent.putExtra(BILL_ID, bill)
-                    startActivity(intent)
-                })
+                            getBillData()
+                        }
+                    }, { bill ->
+                        val intent = Intent(context, BillDetailActivity::class.java)
+                        intent.putExtra(BILL_ID, bill)
+                        startActivity(intent)
+                    })
+            }
         }
     }
 
@@ -85,11 +87,11 @@ class BillUnpaidFragment : Fragment() {
             handler.post {
                 billData?.let { bills.addAll(it) }
                 if (bills.isEmpty()) {
-                    view?.tv_no_data?.visibility = View.VISIBLE
-                    view?.rv_bills?.visibility = View.GONE
+                    binding.tvNoData.visibility = View.VISIBLE
+                    binding.rvBills.visibility = View.GONE
                 } else {
-                    view?.tv_no_data?.visibility = View.GONE
-                    view?.rv_bills?.visibility = View.VISIBLE
+                    binding.tvNoData.visibility = View.GONE
+                    binding.rvBills.visibility = View.VISIBLE
                 }
                 unpaidAdapter.setBills(bills)
                 unpaidAdapter.notifyDataSetChanged()

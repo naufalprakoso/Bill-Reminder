@@ -46,14 +46,16 @@ class BillPaidFragment : Fragment() {
             dbWorkerThread = DbWorkerThread("dbWorkerThread")
             dbWorkerThread.start()
 
-            db = context?.let { AppDatabase.getInstance(it) }
+            if (context != null) {
+                db = AppDatabase.getInstance(context!!)
 
-            adapter =
-                BillPaidAdapter { bill ->
-                    val intent = Intent(context, BillDetailActivity::class.java)
-                    intent.putExtra(BILL_ID, bill)
-                    startActivity(intent)
-                }
+                adapter =
+                    BillPaidAdapter(context!!) { bill ->
+                        val intent = Intent(context, BillDetailActivity::class.java)
+                        intent.putExtra(BILL_ID, bill)
+                        startActivity(intent)
+                    }
+            }
         }
     }
 

@@ -7,7 +7,7 @@ import com.naufalprakoso.billreminder.R
 import com.naufalprakoso.billreminder.database.AppDatabase
 import com.naufalprakoso.billreminder.database.DbWorkerThread
 import com.naufalprakoso.billreminder.database.entity.Bill
-import kotlinx.android.synthetic.main.activity_add_bill.*
+import com.naufalprakoso.billreminder.databinding.ActivityAddBillBinding
 
 class AddBillActivity : AppCompatActivity() {
 
@@ -17,7 +17,7 @@ class AddBillActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_bill)
+        val binding = ActivityAddBillBinding.inflate(layoutInflater)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         dbWorkerThread = DbWorkerThread("dbWorkerThread")
@@ -25,15 +25,15 @@ class AddBillActivity : AppCompatActivity() {
 
         db = AppDatabase.getInstance(this)
 
-        fab.setOnClickListener {
-            val title = edt_title.text.toString()
-            val content = edt_content.text.toString()
-            val amount = edt_amount.text.toString()
+        binding.fab.setOnClickListener {
+            val title = binding.edtTitle.text.toString()
+            val content = binding.edtContent.text.toString()
+            val amount = binding.edtAmount.text.toString()
 
             when {
-                title.isEmpty() -> edt_title.error = getString(R.string.validation_filled)
-                content.isEmpty() -> edt_content.error = getString(R.string.validation_filled)
-                amount.isEmpty() -> edt_amount.error = getString(R.string.validation_filled)
+                title.isEmpty() -> binding.edtTitle.error = getString(R.string.validation_filled)
+                content.isEmpty() -> binding.edtContent.error = getString(R.string.validation_filled)
+                amount.isEmpty() -> binding.edtAmount.error = getString(R.string.validation_filled)
                 else -> {
                     val bill = Bill(
                         0,
@@ -50,6 +50,8 @@ class AddBillActivity : AppCompatActivity() {
                 }
             }
         }
+
+        setContentView(binding.root)
     }
 
     private fun insertBill(bill: Bill) {

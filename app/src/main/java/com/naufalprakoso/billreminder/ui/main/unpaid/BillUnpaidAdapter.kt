@@ -1,21 +1,23 @@
 package com.naufalprakoso.billreminder.ui.main.unpaid
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.naufalprakoso.billreminder.R
 import com.naufalprakoso.billreminder.database.entity.Bill
-import kotlinx.android.synthetic.main.item_bill_unpaid.view.*
+import com.naufalprakoso.billreminder.databinding.ItemBillUnpaidBinding
 import java.text.NumberFormat
-import java.util.*
+import java.util.Locale
 
 class BillUnpaidAdapter(
+    private val context: Context,
     private val checkBill: (Bill, Boolean) -> Unit,
     private val showDetail: (Bill) -> Unit
 ) : RecyclerView.Adapter<BillUnpaidAdapter.ViewHolder>() {
 
     private val bills = arrayListOf<Bill>()
+    private lateinit var binding: ItemBillUnpaidBinding
 
     fun setBills(bills: List<Bill>) {
         this.bills.clear()
@@ -23,21 +25,20 @@ class BillUnpaidAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(
-            R.layout.item_bill_unpaid,
-            parent,
-            false
-        ))
+        val inflater = LayoutInflater.from(context)
+        binding = ItemBillUnpaidBinding.inflate(inflater, parent, false)
+        return ViewHolder(binding.root)
     }
 
     override fun getItemCount(): Int = bills.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItem(bills[position], checkBill, showDetail)
+        holder.bindItem(binding, bills[position], checkBill, showDetail)
     }
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         inline fun bindItem(
+            binding: ItemBillUnpaidBinding,
             bill: Bill,
             crossinline checkBill: (Bill, Boolean) -> Unit,
             crossinline showDetail: (Bill) -> Unit
@@ -46,16 +47,16 @@ class BillUnpaidAdapter(
             val formatRupiah = NumberFormat.getCurrencyInstance(localeID)
             val amount = formatRupiah.format(bill.amount.toDouble())
 
-            itemView.tv_title.text = bill.title
-            itemView.tv_amount.text = amount
-            itemView.tv_content.text = bill.content
-            itemView.cb_paid.isChecked = bill.paid.toBoolean()
+            binding.tvTitle.text = bill.title
+            binding.tvAmount.text = amount
+            binding.tvContent.text = bill.content
+            binding.cbPaid.isChecked = bill.paid.toBoolean()
 
-            itemView.cb_paid.setOnCheckedChangeListener { _, isChecked ->
+            binding.cbPaid.setOnCheckedChangeListener { _, isChecked ->
                 checkBill(bill, isChecked)
             }
 
-            itemView.setOnClickListener {
+            binding.cvContainer.setOnClickListener {
                 showDetail(bill)
             }
         }
