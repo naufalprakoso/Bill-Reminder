@@ -27,16 +27,18 @@ class BillUnpaidFragment : Fragment() {
     private lateinit var unpaidAdapter: BillUnpaidAdapter
     private lateinit var binding: FragmentBillUnpaidBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        dbWorkerThread = DbWorkerThread("dbWorkerThread")
+        dbWorkerThread.start()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentBillUnpaidBinding.inflate(inflater, container, false)
-
-        binding.rvBills.setHasFixedSize(true)
-        binding.rvBills.layoutManager = LinearLayoutManager(context)
-        binding.rvBills.adapter = unpaidAdapter
-
         return binding.root
     }
 
@@ -44,9 +46,6 @@ class BillUnpaidFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         if (activity != null) {
-            dbWorkerThread = DbWorkerThread("dbWorkerThread")
-            dbWorkerThread.start()
-
             if (context != null) {
                 db = AppDatabase.getInstance(context!!)
 
@@ -65,6 +64,9 @@ class BillUnpaidFragment : Fragment() {
                         intent.putExtra(BILL_ID, bill)
                         startActivity(intent)
                     })
+                binding.rvBills.setHasFixedSize(true)
+                binding.rvBills.layoutManager = LinearLayoutManager(context)
+                binding.rvBills.adapter = unpaidAdapter
             }
         }
     }

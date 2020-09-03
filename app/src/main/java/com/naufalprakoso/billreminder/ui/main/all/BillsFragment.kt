@@ -26,16 +26,18 @@ class BillsFragment : Fragment() {
     private lateinit var adapter: BillAdapter
     private lateinit var binding: FragmentBillsBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        dbWorkerThread = DbWorkerThread("dbWorkerThread")
+        dbWorkerThread.start()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentBillsBinding.inflate(inflater, container, false)
-
-        binding.rvBills.setHasFixedSize(true)
-        binding.rvBills.layoutManager = LinearLayoutManager(context)
-        binding.rvBills.adapter = adapter
-
         return binding.root
     }
 
@@ -43,9 +45,6 @@ class BillsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         if (activity != null) {
-            dbWorkerThread = DbWorkerThread("dbWorkerThread")
-            dbWorkerThread.start()
-
             if (context != null) {
                 db = AppDatabase.getInstance(context!!)
 
@@ -54,6 +53,9 @@ class BillsFragment : Fragment() {
                     intent.putExtra(BILL_ID, bill)
                     startActivity(intent)
                 }
+                binding.rvBills.setHasFixedSize(true)
+                binding.rvBills.layoutManager = LinearLayoutManager(context)
+                binding.rvBills.adapter = adapter
             }
         }
     }
