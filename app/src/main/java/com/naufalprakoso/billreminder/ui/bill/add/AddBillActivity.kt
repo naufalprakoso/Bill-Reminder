@@ -23,7 +23,7 @@ class AddBillActivity : AppCompatActivity() {
         dbWorkerThread = DbWorkerThread("dbWorkerThread")
         dbWorkerThread.start()
 
-        db = AppDatabase.getInstance(this)
+        db = AppDatabase.buildDatabase(this)
 
         binding.fab.setOnClickListener {
             val title = binding.edtTitle.text.toString()
@@ -60,7 +60,6 @@ class AddBillActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        AppDatabase.destroyInstance()
         dbWorkerThread.quit()
         super.onDestroy()
     }

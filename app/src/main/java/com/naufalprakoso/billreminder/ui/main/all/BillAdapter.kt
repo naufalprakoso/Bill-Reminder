@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.naufalprakoso.billreminder.database.entity.Bill
 import com.naufalprakoso.billreminder.databinding.ItemBillUnpaidBinding
 import java.text.NumberFormat
-import java.util.Locale
+import java.util.*
 
 class BillAdapter(
     private val context: Context,
@@ -19,8 +19,9 @@ class BillAdapter(
     private lateinit var binding: ItemBillUnpaidBinding
 
     fun setBills(bills: List<Bill>) {
-        this.bills.clear()
-        this.bills.addAll(bills)
+        if (bills.isNullOrEmpty()) this.bills.clear()
+        else this.bills.addAll(bills)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

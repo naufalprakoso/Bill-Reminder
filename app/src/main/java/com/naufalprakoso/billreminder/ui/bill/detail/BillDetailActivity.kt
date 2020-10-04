@@ -1,15 +1,15 @@
 package com.naufalprakoso.billreminder.ui.bill.detail
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.naufalprakoso.billreminder.database.AppDatabase
 import com.naufalprakoso.billreminder.database.DbWorkerThread
 import com.naufalprakoso.billreminder.database.entity.Bill
 import com.naufalprakoso.billreminder.databinding.ActivityBillDetailBinding
 import com.naufalprakoso.billreminder.utils.BILL_ID
 import java.text.NumberFormat
-import java.util.Locale
+import java.util.*
 
 class BillDetailActivity : AppCompatActivity() {
 
@@ -24,7 +24,7 @@ class BillDetailActivity : AppCompatActivity() {
         dbWorkerThread = DbWorkerThread("dbWorkerThread")
         dbWorkerThread.start()
 
-        db = AppDatabase.getInstance(this)
+        db = AppDatabase.buildDatabase(this)
 
         val bill = intent.getParcelableExtra<Bill>(BILL_ID)
 
