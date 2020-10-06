@@ -10,8 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.naufalprakoso.billreminder.database.AppDatabase
-import com.naufalprakoso.billreminder.database.DbWorkerThread
 import com.naufalprakoso.billreminder.database.entity.Bill
 import com.naufalprakoso.billreminder.databinding.FragmentBillUnpaidBinding
 import com.naufalprakoso.billreminder.ui.bill.detail.BillDetailActivity
@@ -21,20 +19,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class BillUnpaidFragment : Fragment() {
 
-    private var db: AppDatabase? = null
-    private lateinit var dbWorkerThread: DbWorkerThread
-
     private lateinit var unpaidAdapter: BillUnpaidAdapter
     private lateinit var binding: FragmentBillUnpaidBinding
 
     private val billViewModel: BillUnpaidViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        dbWorkerThread = DbWorkerThread("dbWorkerThread")
-        dbWorkerThread.start()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,12 +46,6 @@ class BillUnpaidFragment : Fragment() {
         }
     }
 
-    private fun updateBill(bill: Bill) {
-        val task = Runnable { db?.billDao()?.update(bill) }
-        dbWorkerThread.postTask(task)
-        unpaidAdapter.notifyDataSetChanged()
-    }
-
     private fun initAdapter() {
         unpaidAdapter =
             BillUnpaidAdapter(requireContext(), { bill, isChecked ->
@@ -71,7 +53,7 @@ class BillUnpaidFragment : Fragment() {
                     Toast.makeText(context, "Bill has been paid", Toast.LENGTH_SHORT).show()
 
                     val newBill = bill.copy(paid = "true")
-                    billViewModel.updateBills(newBill)
+                    billViewModel.updateBill(newBill)
 
                 }
             }, { bill ->

@@ -12,6 +12,7 @@ interface BillRepository {
     fun getUnpaidBills(): LiveData<List<Bill>>
     fun getPaidBills(): LiveData<List<Bill>>
     fun update(bill: Bill)
+    fun insert(bill: Bill)
 }
 
 class BillRepositoryImpl(
@@ -30,6 +31,10 @@ class BillRepositoryImpl(
 
     override fun update(bill: Bill) {
         billDao.update(bill)
+    }
+
+    override fun insert(bill: Bill) {
+        billDao.insert(bill)
     }
 
 }
