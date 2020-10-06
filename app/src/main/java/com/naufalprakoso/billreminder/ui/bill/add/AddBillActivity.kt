@@ -2,28 +2,22 @@ package com.naufalprakoso.billreminder.ui.bill.add
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.naufalprakoso.billreminder.R
-import com.naufalprakoso.billreminder.database.AppDatabase
-import com.naufalprakoso.billreminder.database.DbWorkerThread
 import com.naufalprakoso.billreminder.database.entity.Bill
 import com.naufalprakoso.billreminder.databinding.ActivityAddBillBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AddBillActivity : AppCompatActivity() {
 
-    private var db: AppDatabase? = null
-
-    private lateinit var dbWorkerThread: DbWorkerThread
+    private val addBillViewModel: AddBillViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityAddBillBinding.inflate(layoutInflater)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        dbWorkerThread = DbWorkerThread("dbWorkerThread")
-        dbWorkerThread.start()
-
-        db = AppDatabase.getInstance(this)
 
         binding.fab.setOnClickListener {
             val title = binding.edtTitle.text.toString()
@@ -55,14 +49,7 @@ class AddBillActivity : AppCompatActivity() {
     }
 
     private fun insertBill(bill: Bill) {
-        val task = Runnable { db?.billDao()?.insert(bill) }
-        dbWorkerThread.postTask(task)
-    }
-
-    override fun onDestroy() {
-        AppDatabase.destroyInstance()
-        dbWorkerThread.quit()
-        super.onDestroy()
+        addBillViewModel.insertBill(bill)
     }
 
     override fun onSupportNavigateUp(): Boolean {

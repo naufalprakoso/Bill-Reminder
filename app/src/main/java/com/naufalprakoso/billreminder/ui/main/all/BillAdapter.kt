@@ -4,9 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.naufalprakoso.billreminder.database.entity.Bill
 import com.naufalprakoso.billreminder.databinding.ItemBillUnpaidBinding
+import com.naufalprakoso.billreminder.utils.DiffUtilCallback
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -19,8 +21,11 @@ class BillAdapter(
     private lateinit var binding: ItemBillUnpaidBinding
 
     fun setBills(bills: List<Bill>) {
+        val diffUtilCallback = DiffUtilCallback(this.bills, bills)
+        val result = DiffUtil.calculateDiff(diffUtilCallback)
         this.bills.clear()
         this.bills.addAll(bills)
+        result.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

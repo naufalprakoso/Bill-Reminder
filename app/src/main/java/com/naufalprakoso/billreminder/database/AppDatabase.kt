@@ -1,7 +1,9 @@
 package com.naufalprakoso.billreminder.database
 
 import android.content.Context
-import androidx.room.*
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.naufalprakoso.billreminder.database.dao.BillDao
 import com.naufalprakoso.billreminder.database.entity.Bill
 
@@ -11,23 +13,16 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun billDao(): BillDao
 
     companion object {
-        private var INSTANCE: AppDatabase? = null
-        private val sLock = Object()
+        private const val databaseName = "bill-reminder.db"
 
-        fun getInstance(context: Context): AppDatabase? {
-            synchronized(sLock) {
-                if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(
-                        context.applicationContext,
-                        AppDatabase::class.java, "bill-reminder.db"
-                    ).build()
-                }
-            }
-            return INSTANCE
-        }
-
-        fun destroyInstance() {
-            INSTANCE = null
+        fun buildDatabase(context: Context): AppDatabase {
+            return Room.databaseBuilder(
+                context,
+                AppDatabase::class.java,
+                databaseName
+            )
+                .fallbackToDestructiveMigration()
+                .build()
         }
     }
 

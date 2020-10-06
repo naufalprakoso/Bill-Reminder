@@ -1,35 +1,22 @@
 package com.naufalprakoso.billreminder.database.dao
 
-import androidx.room.Dao
-import androidx.room.Query
-import androidx.room.Insert
-import androidx.room.Delete
-import androidx.room.Update
-import androidx.room.OnConflictStrategy
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import com.naufalprakoso.billreminder.database.entity.Bill
 
 @Dao
 interface BillDao {
     @Query("SELECT * FROM bills where paid = 'false'")
-    fun getUnpaidBills(): List<Bill>
+    fun getUnpaidBills(): LiveData<List<Bill>>
 
     @Query("SELECT * FROM bills where paid = 'true'")
-    fun getPaidBills(): List<Bill>
+    fun getPaidBills(): LiveData<List<Bill>>
 
     @Query("SELECT * FROM bills")
-    fun getBills(): List<Bill>
-
-    @Query("SELECT * FROM bills WHERE title LIKE :title")
-    fun getByTitle(title: String): List<Bill>
-
-    @Query("SELECT * FROM bills WHERE id = :id")
-    fun getBill(id: Int): Bill
+    fun getBills(): LiveData<List<Bill>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(bill: Bill)
-
-    @Delete
-    fun delete(bill: Bill)
 
     @Update
     fun update(bill: Bill)

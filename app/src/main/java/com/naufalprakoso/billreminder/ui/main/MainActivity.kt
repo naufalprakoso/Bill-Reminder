@@ -2,12 +2,14 @@ package com.naufalprakoso.billreminder.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.tabs.TabLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.tabs.TabLayout
 import com.naufalprakoso.billreminder.R
 import com.naufalprakoso.billreminder.databinding.ActivityMainBinding
 import com.naufalprakoso.billreminder.ui.bill.add.AddBillActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
